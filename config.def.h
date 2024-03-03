@@ -172,6 +172,14 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Right,      swapdir,        {.ui = 1} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Up,         swapdir,        {.ui = 2} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Down,       swapdir,        {.ui = 3} },
+	{ MODKEY,                    -1, XKB_KEY_Down,       moveresizekb,   {.v = (int []){ 0, 40, 0, 0 }}},
+	{ MODKEY,                    -1, XKB_KEY_Up,         moveresizekb,   {.v = (int []){ 0, -40, 0, 0 }}},
+	{ MODKEY,                    -1, XKB_KEY_Right,      moveresizekb,   {.v = (int []){ 40, 0, 0, 0 }}},
+	{ MODKEY,                    -1, XKB_KEY_Left,       moveresizekb,   {.v = (int []){ -40, 0, 0, 0 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Down,       moveresizekb,   {.v = (int []){ 0, 0, 0, 40 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Up,         moveresizekb,   {.v = (int []){ 0, 0, 0, -40 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Right,      moveresizekb,   {.v = (int []){ 0, 0, 40, 0 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Left,       moveresizekb,   {.v = (int []){ 0, 0, -40, 0 }}},
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,-1,XKB_KEY_Terminate_Server, quit, {0} },

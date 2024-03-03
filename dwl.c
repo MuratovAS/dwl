@@ -2772,10 +2772,13 @@ xytonode(double x, double y, struct wlr_surface **psurface,
 	for (layer = NUM_LAYERS - 1; !surface && layer >= 0; layer--) {
 		if (!(node = wlr_scene_node_at(&layers[layer]->node, x, y, nx, ny)))
 			continue;
-
+		
+		struct wlr_scene_buffer *buffer = NULL;
 		if (node->type == WLR_SCENE_NODE_BUFFER)
-			surface = wlr_scene_surface_try_from_buffer(
-					wlr_scene_buffer_from_node(node))->surface;
+		{
+			buffer = wlr_scene_buffer_from_node(node);
+			surface = wlr_scene_surface_try_from_buffer(buffer)->surface;
+		}
 		/* Walk the tree to find a node that knows the client */
 		for (pnode = node; pnode && !c; pnode = &pnode->parent->node)
 			c = pnode->data;
@@ -2783,6 +2786,13 @@ xytonode(double x, double y, struct wlr_surface **psurface,
 			c = NULL;
 			l = pnode->data;
 		}
+#ifdef XWAYLAND
+		// https://wayland.emersion.fr/wlroots/wlr/render/pass.h.html#enum-wlr_scale_filter_mode
+		// https://github.com/swaywm/wlroots/issues/1770
+		if (node->type == WLR_SCENE_NODE_BUFFER)
+			if (c && (c->type == X11Managed || c->type == X11Unmanaged))
+				wlr_scene_buffer_set_filter_mode(buffer, WLR_SCALE_FILTER_NEAREST);
+#endif
 	}
 
 	if (psurface) *psurface = surface;

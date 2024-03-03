@@ -2790,7 +2790,7 @@ xytonode(double x, double y, struct wlr_surface **psurface,
 		// https://wayland.emersion.fr/wlroots/wlr/render/pass.h.html#enum-wlr_scale_filter_mode
 		// https://github.com/swaywm/wlroots/issues/1770
 		if (node->type == WLR_SCENE_NODE_BUFFER)
-			if (c && (c->type == X11Managed || c->type == X11Unmanaged))
+			if (c && (c->type == X11))
 				wlr_scene_buffer_set_filter_mode(buffer, WLR_SCALE_FILTER_NEAREST);
 #endif
 	}

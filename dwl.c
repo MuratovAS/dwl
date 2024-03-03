@@ -2838,7 +2838,7 @@ moveresizekb(const Arg *arg)
 		.y = c->geom.y + ((int *)arg->v)[1],
 		.width = c->geom.width + ((int *)arg->v)[2],
 		.height = c->geom.height + ((int *)arg->v)[3],
-	}, 1);
+	}, 0, 1);
 }
 
 void

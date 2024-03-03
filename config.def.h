@@ -164,6 +164,14 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                   7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                  8),
 	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Q,          quit,           {0} },
+	{ MODKEY|WLR_MODIFIER_CTRL, -1,  XKB_KEY_Left,       focusdir,       {.ui = 0} },
+	{ MODKEY|WLR_MODIFIER_CTRL, -1,  XKB_KEY_Right,      focusdir,       {.ui = 1} },
+	{ MODKEY|WLR_MODIFIER_CTRL, -1,  XKB_KEY_Up,         focusdir,       {.ui = 2} },
+	{ MODKEY|WLR_MODIFIER_CTRL, -1,  XKB_KEY_Down,       focusdir,       {.ui = 3} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Left,       swapdir,        {.ui = 0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Right,      swapdir,        {.ui = 1} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Up,         swapdir,        {.ui = 2} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, -1, XKB_KEY_Down,       swapdir,        {.ui = 3} },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,-1,XKB_KEY_Terminate_Server, quit, {0} },

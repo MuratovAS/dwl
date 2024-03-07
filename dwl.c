@@ -2987,41 +2987,73 @@ usage:
 static void
 bstack(Monitor *m) 
 {
-	int w, h, mh, mx, tx, ty, tw;
-	unsigned int i, n = 0;
+	unsigned int mw, my, ty, draw_borders = 1;
+	int i, n = 0;
 	Client *c;
 
 	wl_list_for_each(c, &clients, link)
-		if (VISIBLEON(c, m) && !c->isfloating)
+		if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen)
 			n++;
 	if (n == 0)
 		return;
 
-	if (n > m->nmaster) {
-		mh = m->nmaster ? m->mfact * m->w.height : 0;
-		tw = m->w.width / (n - m->nmaster);
-		ty = m->w.y + mh;
-	} else {
-		mh = m->w.height;
-		tw = m->w.width;
-		ty = m->w.y;
-	}
+	if (n == smartborders)
+		draw_borders = 0;
 
-	i = mx = 0;
-	tx = m-> w.x;
+	if (n > m->nmaster)
+		mw = m->nmaster ? ROUND(m->w.height * m->mfact) : 0;
+	else
+		mw = m->w.height;
+	i = my = ty = 0;
 	wl_list_for_each(c, &clients, link) {
-		if (!VISIBLEON(c, m) || c->isfloating)
+		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
 			continue;
 		if (i < m->nmaster) {
-			w = (m->w.width - mx) / (MIN(n, m->nmaster) - i);
-			resize(c, (struct wlr_box) { .x = m->w.x + mx, .y = m->w.y, .width = w - (2 * c->bw), .height = mh - (2 * c->bw) }, 0);
-			mx += c->geom.width;
+			resize(c, (struct wlr_box){.x = m->w.x + my, .y = m->w.y, .width = (m->w.width - my) / (MIN(n, m->nmaster) - i),
+				.height = mw}, 0, draw_borders);
+			my += c->geom.width;
 		} else {
-			h = m->w.height - mh;
-			resize(c, (struct wlr_box) { .x = tx, .y = ty, .width = tw - (2 * c->bw), .height = h - (2 * c->bw) }, 0);
-			if (tw != m->w.width)
-				tx += c->geom.width;
+			resize(c, (struct wlr_box){.x = m->w.x + ty, .y = m->w.y + mw,
+				.width = (m->w.width - ty) / (n - i), .height = m->w.height - mw}, 0, draw_borders);
+			ty += c->geom.width;
 		}
 		i++;
 	}
 }
+/*
+void
+tile(Monitor *m)
+{
+	unsigned int mw, my, ty, draw_borders = 1;
+	int i, n = 0;
+	Client *c;
+
+	wl_list_for_each(c, &clients, link)
+		if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen)
+			n++;
+	if (n == 0)
+		return;
+
+	if (n == smartborders)
+		draw_borders = 0;
+
+	if (n > m->nmaster)
+		mw = m->nmaster ? ROUND(m->w.width * m->mfact) : 0;
+	else
+		mw = m->w.width;
+	i = my = ty = 0;
+	wl_list_for_each(c, &clients, link) {
+		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
+			continue;
+		if (i < m->nmaster) {
+			resize(c, (struct wlr_box){.x = m->w.x, .y = m->w.y + my, .width = mw,
+				.height = (m->w.height - my) / (MIN(n, m->nmaster) - i)}, 0, draw_borders);
+			my += c->geom.height;
+		} else {
+			resize(c, (struct wlr_box){.x = m->w.x + mw, .y = m->w.y + ty,
+				.width = m->w.width - mw, .height = (m->w.height - ty) / (n - i)}, 0, draw_borders);
+			ty += c->geom.height;
+		}
+		i++;
+	}
+}*/

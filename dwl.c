@@ -334,6 +334,7 @@ static Monitor *xytomon(double x, double y);
 static void xytonode(double x, double y, struct wlr_surface **psurface,
 		Client **pc, LayerSurface **pl, double *nx, double *ny);
 static void zoom(const Arg *arg);
+static void bstack(Monitor *m);
 
 /* variables */
 static const char broken[] = "broken";
@@ -2981,4 +2982,46 @@ main(int argc, char *argv[])
 
 usage:
 	die("Usage: %s [-v] [-d] [-s startup command]", argv[0]);
+}
+
+static void
+bstack(Monitor *m) 
+{
+	int w, h, mh, mx, tx, ty, tw;
+	unsigned int i, n = 0;
+	Client *c;
+
+	wl_list_for_each(c, &clients, link)
+		if (VISIBLEON(c, m) && !c->isfloating)
+			n++;
+	if (n == 0)
+		return;
+
+	if (n > m->nmaster) {
+		mh = m->nmaster ? m->mfact * m->w.height : 0;
+		tw = m->w.width / (n - m->nmaster);
+		ty = m->w.y + mh;
+	} else {
+		mh = m->w.height;
+		tw = m->w.width;
+		ty = m->w.y;
+	}
+
+	i = mx = 0;
+	tx = m-> w.x;
+	wl_list_for_each(c, &clients, link) {
+		if (!VISIBLEON(c, m) || c->isfloating)
+			continue;
+		if (i < m->nmaster) {
+			w = (m->w.width - mx) / (MIN(n, m->nmaster) - i);
+			resize(c, (struct wlr_box) { .x = m->w.x + mx, .y = m->w.y, .width = w - (2 * c->bw), .height = mh - (2 * c->bw) }, 0);
+			mx += c->geom.width;
+		} else {
+			h = m->w.height - mh;
+			resize(c, (struct wlr_box) { .x = tx, .y = ty, .width = tw - (2 * c->bw), .height = h - (2 * c->bw) }, 0);
+			if (tw != m->w.width)
+				tx += c->geom.width;
+		}
+		i++;
+	}
 }

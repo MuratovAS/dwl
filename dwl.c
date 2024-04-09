@@ -2806,7 +2806,7 @@ tile(Monitor *m)
 			h = (m->w.height - my - gappx*e - gappx*e * (r - 1)) / r;
 			resize(c, (struct wlr_box){.x = m->w.x + gappx*e, .y = m->w.y + my,
 				.width = mw - gappx*e, 
-				.height = h}, 0 draw_borders);
+				.height = h}, 0, draw_borders);
 			my += c->geom.height + gappx*e;
 		} else {
 			r = n - i;

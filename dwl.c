@@ -220,6 +220,7 @@ typedef struct {
 	float mfact;
 	int nmaster;
 	float scale;
+	uint32_t tag;
 	const Layout *lt;
 	enum wl_output_transform rr;
 	int x, y;
@@ -977,6 +978,8 @@ createmon(struct wl_listener *listener, void *data)
 			m->m.y = r->y;
 			m->mfact = r->mfact;
 			m->nmaster = r->nmaster;
+			if (r->tag != 0)
+				m->tagset[m->seltags] = r->tag;
 			m->lt[0] = r->lt;
 			m->lt[1] = &layouts[LENGTH(layouts) > 1 && r->lt != &layouts[1]];
 			strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, LENGTH(m->ltsymbol));
@@ -1381,6 +1384,7 @@ dwl_ipc_output_printstatus_to(DwlIpcOutput *ipc_output)
 void
 dwl_ipc_output_set_client_tags(struct wl_client *client, struct wl_resource *resource, uint32_t and_tags, uint32_t xor_tags)
 {
+	return;
 	DwlIpcOutput *ipc_output;
 	Monitor *monitor;
 	Client *selected_client;
@@ -1408,6 +1412,7 @@ dwl_ipc_output_set_client_tags(struct wl_client *client, struct wl_resource *res
 void
 dwl_ipc_output_set_layout(struct wl_client *client, struct wl_resource *resource, uint32_t index)
 {
+	return;
 	DwlIpcOutput *ipc_output;
 	Monitor *monitor;
 
@@ -1429,6 +1434,7 @@ dwl_ipc_output_set_layout(struct wl_client *client, struct wl_resource *resource
 void
 dwl_ipc_output_set_tags(struct wl_client *client, struct wl_resource *resource, uint32_t tagmask, uint32_t toggle_tagset)
 {
+	return;
 	DwlIpcOutput *ipc_output;
 	Monitor *monitor;
 	unsigned int newtags = tagmask & TAGMASK;

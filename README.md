@@ -1,3 +1,20 @@
+# This is a fork of [dwl/dwl](https://codeberg.org/dwl/dwl)  
+Things I changed:
+1. Changed settings for personal use
+2. Add alwayscenter
+3. Add cursortheme
+4. Add singletagset 
+5. Add moveresizekb
+6. Add swapandfocusdir
+7. Add ipc
+8. Add gaps
+9. Add en-keycodes
+10. Add chainkeys 
+11. Add autostart 
+12. Add XWaylandScaleFilter (own patch)
+13. smartborders
+14. bstack (own patch)
+
 # dwl - dwm for Wayland
 
 Join us on our IRC channel: [#dwl on Libera Chat]  

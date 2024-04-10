@@ -1618,6 +1618,8 @@ Client *
 client_in_direction(const char *direction, const int *skipfloat)
 {
 	Client *cfocused = focustop(selmon);
+	if (!cfocused)
+		return NULL;
 	Vector cfocusedposition = position_of_box(&cfocused->geom);
 	Client *ctarget = NULL;
 	double targetdistance = INFINITY;

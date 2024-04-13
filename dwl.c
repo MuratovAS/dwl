@@ -3684,7 +3684,7 @@ usage:
 static void
 bstack(Monitor *m) 
 {
-	unsigned int mw, my, ty, draw_borders = 1;
+	unsigned int w, r, e = m->gaps, mw, my, ty, draw_borders = 1;
 	int i, n = 0;
 	Client *c;
 
@@ -3693,26 +3693,33 @@ bstack(Monitor *m)
 			n++;
 	if (n == 0)
 		return;
+	if (smartgaps == n)
+		e = 0;
 
 	if (n == smartborders)
 		draw_borders = 0;
 
 	if (n > m->nmaster)
-		mw = m->nmaster ? ROUND(m->w.height * m->mfact) : 0;
+		mw = m->nmaster ? ROUND((m->w.height + gappx*e) * m->mfact) : 0;
 	else
-		mw = m->w.height;
-	i = my = ty = 0;
+		mw = m->w.height - 2*gappx*e + gappx*e;
+	i = 0;
+	my = ty = gappx*e;
 	wl_list_for_each(c, &clients, link) {
 		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
 			continue;
 		if (i < m->nmaster) {
-			resize(c, (struct wlr_box){.x = m->w.x + my, .y = m->w.y, .width = (m->w.width - my) / (MIN(n, m->nmaster) - i),
-				.height = mw}, 0, draw_borders);
-			my += c->geom.width;
+			r = MIN(n, m->nmaster) - i;
+			w = (m->w.width - my - gappx*e - gappx*e * (r - 1)) / r;
+			resize(c, (struct wlr_box){.x = m->w.x + my, .y = m->w.y + gappx*e, .width = w,
+				.height = mw - gappx*e}, 0, draw_borders);
+			my += c->geom.width + gappx*e;
 		} else {
-			resize(c, (struct wlr_box){.x = m->w.x + ty, .y = m->w.y + mw,
-				.width = (m->w.width - ty) / (n - i), .height = m->w.height - mw}, 0, draw_borders);
-			ty += c->geom.width;
+			r = n - i;
+			w = (m->w.width - ty - gappx*e - gappx*e * (r - 1)) / r;
+			resize(c, (struct wlr_box){.x = m->w.x + ty, .y = m->w.y + mw + gappx*e,
+				.width = w, .height = m->w.height - mw - 2*gappx*e}, 0, draw_borders);
+			ty += c->geom.width + gappx*e;
 		}
 		i++;
 	}

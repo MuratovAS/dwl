@@ -14,6 +14,7 @@ Things I changed:
 12. Add XWaylandScaleFilter (own patch)
 13. smartborders
 14. bstack (own patch)
+15. xwayland-handle-minimize (mainline)
 
 # dwl - dwm for Wayland
 

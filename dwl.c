@@ -3845,7 +3845,7 @@ bstack(Monitor *m)
 		draw_borders = 0;
 
 	if (n > m->nmaster)
-		mw = m->nmaster ? ROUND((m->w.height + gappx*e) * m->mfact) : 0;
+		mw = m->nmaster ? (int)round((m->w.height + gappx*e) * m->mfact) : 0;
 	else
 		mw = m->w.height - 2*gappx*e + gappx*e;
 	i = 0;

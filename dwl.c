@@ -2049,7 +2049,7 @@ keybinding(uint32_t mods, xkb_keysym_t sym)
 	 */
 	const Key *k;
 	for (k = keys; k < END(keys); k++) {
-		if (CLEANMASK(mods) == CLEANMASK(k->mod)
+		if ((CLEANMASK(mods) == CLEANMASK(k->mod) || k->mod == XKB_KEY_NoSymbol)
 				&& sym == k->keysym
 				&& chainkey == -1
 				&& k->chain == -1

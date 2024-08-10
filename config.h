@@ -2,9 +2,9 @@
 
 /* Taken from https://github.com/djpohly/dwl/issues/466 */
 #define COLOR(hex)    { ((hex >> 24) & 0xFF) / 255.0f, \
-                        ((hex >> 16) & 0xFF) / 255.0f, \
-                        ((hex >> 8) & 0xFF) / 255.0f, \
-                        (hex & 0xFF) / 255.0f }
+						((hex >> 16) & 0xFF) / 255.0f, \
+						((hex >> 8) & 0xFF) / 255.0f, \
+						(hex & 0xFF) / 255.0f }
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
@@ -31,8 +31,8 @@ static int log_level = WLR_ERROR;
 
 /* Autostart */
 static const char *const autostart[] = {
-        "sh", "-c", "autostart.sh", NULL,
-        NULL /* terminate */
+		"sh", "-c", "autostart.sh", NULL,
+		NULL /* terminate */
 };
 
 
@@ -85,7 +85,7 @@ static const struct xkb_rule_names xkb_rules = {
 	*/
 	.options = NULL,
 	.layout = "us,ru",
-    .options = "grp:win_space_toggle"
+	.options = "grp:win_space_toggle"
 };
 
 static const int repeat_rate = 25;
@@ -172,67 +172,84 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  chain,  key                 function        argument */
-	{ MODKEY|WLR_MODIFIER_CTRL,	 -1,XKB_KEY_Print,          spawn,          SHCMD(RECORDERGIF) },
-	{ MODKEY,					 -1,XKB_KEY_Print,          spawn,          SHCMD(SCREENSHOTSWAPPY) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Print,          spawn,          SHCMD(SCREENSHOTFILE) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_E,XKB_KEY_S,          spawn,          SHCMD(SHUTDOWNCMD) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_E,XKB_KEY_R,          spawn,          SHCMD(REBOOTCMD) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_E,XKB_KEY_H,          spawn,          SHCMD(HIBERNATECMD) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_D,XKB_KEY_C,          spawn,          SHCMD(RCdockerCMD) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_D,XKB_KEY_V,          spawn,          SHCMD(RClibvirtdCMD) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_D,XKB_KEY_P,          spawn,          SHCMD(RCcupsdCMD) },
-	{ MODKEY,                    -1,XKB_KEY_Return,     spawn,          SHCMD("$TERM") },
-	{ MODKEY,                    -1,XKB_KEY_d,          spawn,          SHCMD(MENUCMD) },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Q,          killclient,           {0} },
-	//{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_C,          quit,     {0} },
-	{ MODKEY,                    -1,XKB_KEY_Left,       focusdir,       {.ui = 0} },
-	{ MODKEY,                    -1,XKB_KEY_Right,      focusdir,       {.ui = 1} },
-	{ MODKEY,                    -1,XKB_KEY_Up,         focusdir,       {.ui = 2} },
-	{ MODKEY,                    -1,XKB_KEY_Down,       focusdir,       {.ui = 3} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Left,       swapdir,        {.ui = 0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Right,      swapdir,        {.ui = 1} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Up,         swapdir,        {.ui = 2} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Down,       swapdir,        {.ui = 3} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  -1,XKB_KEY_Down,       moveresizekb,   {.v = (int []){ 0, 40, 0, 0 }}},
-	{ MODKEY|WLR_MODIFIER_CTRL,  -1,XKB_KEY_Up,         moveresizekb,   {.v = (int []){ 0, -40, 0, 0 }}},
-	{ MODKEY|WLR_MODIFIER_CTRL,  -1,XKB_KEY_Right,      moveresizekb,   {.v = (int []){ 40, 0, 0, 0 }}},
-	{ MODKEY|WLR_MODIFIER_CTRL,  -1,XKB_KEY_Left,       moveresizekb,   {.v = (int []){ -40, 0, 0, 0 }}},
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Down,       moveresizekb,   {.v = (int []){ 0, 0, 0, 40 }}},//NOTWORK
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Up,         moveresizekb,   {.v = (int []){ 0, 0, 0, -40 }}},//NOTWORK
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Right,      moveresizekb,   {.v = (int []){ 0, 0, 40, 0 }}},//NOTWORK
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_Left,       moveresizekb,   {.v = (int []){ 0, 0, -40, 0 }}},//NOTWORK
-	{ MODKEY,                    -1,XKB_KEY_j,          incnmaster,     {.i = +1} },
-	{ MODKEY,                    -1,XKB_KEY_k,          incnmaster,     {.i = -1} },
-	{ MODKEY,                    -1,XKB_KEY_h,          setmfact,       {.f = -0.05} },
-	{ MODKEY,                    -1,XKB_KEY_l,          setmfact,       {.f = +0.05} },
-	  // { MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_j,          focusstack,     {.i = +1} },
-	  // { MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_k,          focusstack,     {.i = -1} },
-	{ MODKEY,                    -1,XKB_KEY_r,          setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                    -1,XKB_KEY_t,          setlayout,      {.v = &layouts[1]} },
-	// { MODKEY,                    -1,XKB_KEY_f,          setlayout,      {.v = &layouts[2]} },
-	// { MODKEY,                    -1,XKB_KEY_o,          setlayout,      {.v = &layouts[3]} },
-	// { MODKEY,                    -1,XKB_KEY_p,          setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                    -1,XKB_KEY_Insert,      togglefloating, {0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, -1,XKB_KEY_F,         togglefullscreen, {0} },
-	{ MODKEY,                    -1,XKB_KEY_Tab,     view,           {0} },
-	// { MODKEY|WLR_MODIFIER_CTRL, -1,XKB_KEY_Tab,       view,           {.ui = ~0} },
-	{ MODKEY, 			     -1,XKB_KEY_z,       tag,            {.ui = ~0} },
-	  // { MODKEY,				     -1,XKB_KEY_x,     zoom,           {0} },
-	  // { MODKEY, 			     -1, XKB_KEY_v,       tagmon,         {.i = WLR_DIRECTION_LEFT} },
-	  // { MODKEY, 			     -1, XKB_KEY_b,    tagmon,         {.i = WLR_DIRECTION_RIGHT} },
-	  // { MODKEY,                  -1, XKB_KEY_n,      focusmon,       {.i = WLR_DIRECTION_LEFT} },
-	  // { MODKEY,                  -1, XKB_KEY_m,     focusmon,       {.i = WLR_DIRECTION_RIGHT} },
-	{ MODKEY,                    -1, XKB_KEY_g,          togglegaps,     {0} },
-	{ MODKEY,                    -1, XKB_KEY_b,          togglebar,      {0} },
-	TAGKEYS(          XKB_KEY_1, XKB_KEY_exclam,                     0),
-	TAGKEYS(          XKB_KEY_2, XKB_KEY_at,                         1),
-	TAGKEYS(          XKB_KEY_3, XKB_KEY_numbersign,                 2),
-	TAGKEYS(          XKB_KEY_4, XKB_KEY_dollar,                     3),
-	TAGKEYS(          XKB_KEY_5, XKB_KEY_percent,                    4),
-	TAGKEYS(          XKB_KEY_6, XKB_KEY_asciicircum,                5),
-	TAGKEYS(          XKB_KEY_7, XKB_KEY_ampersand,                  6),
-	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                   7),
-	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                  8),
+	{ MODKEY|WLR_MODIFIER_SHIFT,         XKB_KEY_E,XKB_KEY_S,               spawn,            SHCMD(SHUTDOWNCMD) },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         XKB_KEY_E,XKB_KEY_R,               spawn,            SHCMD(REBOOTCMD) },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         XKB_KEY_E,XKB_KEY_H,               spawn,            SHCMD(HIBERNATECMD) },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         XKB_KEY_D,XKB_KEY_C,               spawn,            SHCMD(RCdockerCMD) },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         XKB_KEY_D,XKB_KEY_V,               spawn,            SHCMD(RClibvirtdCMD) },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         XKB_KEY_D,XKB_KEY_P,               spawn,            SHCMD(RCcupsdCMD) },
+	
+	
+	{ XKB_KEY_NoSymbol,                  -1,XKB_KEY_XF86AudioPlay,          spawn,            SHCMD("playerctl play") },
+	{ XKB_KEY_NoSymbol,                  -1,XKB_KEY_XF86AudioPause,         spawn,            SHCMD("playerctl pause") },
+	{ XKB_KEY_NoSymbol,                  -1,XKB_KEY_XF86AudioStop,          spawn,            SHCMD("playerctl stop") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86AudioPrev,          spawn,            SHCMD("playerctl previous") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86AudioNext,          spawn,            SHCMD("playerctl next") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86AudioMute,          spawn,            SHCMD("pamixer -t") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86AudioRaiseVolume,   spawn,            SHCMD("pamixer -i 3") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86AudioLowerVolume,   spawn,            SHCMD("pamixer -d 3") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86MonBrightnessUp,    spawn,            SHCMD("light -A 5") },
+	{ XKB_KEY_NoSymbol,	                 -1,XKB_KEY_XF86MonBrightnessDown,  spawn,            SHCMD("light -U 5") },
+
+	{ MODKEY,                            -1,XKB_KEY_Print,                  spawn,            SHCMD(SCREENSHOTSWAPPY) },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Print,                  spawn,            SHCMD(SCREENSHOTFILE) },
+	{ MODKEY|WLR_MODIFIER_CTRL,	         -1,XKB_KEY_Print,                  spawn,            SHCMD(RECORDERGIF) },
+	
+	{ MODKEY,                            -1,XKB_KEY_Return,                 spawn,            SHCMD("$TERM") },
+	{ MODKEY,                            -1,XKB_KEY_d,                      spawn,            SHCMD(MENUCMD) },
+
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Q,                      killclient,       {0} },
+	{ MODKEY,                            -1,XKB_KEY_Left,                   focusdir,         {.ui = 0} },
+	{ MODKEY,                            -1,XKB_KEY_Right,                  focusdir,         {.ui = 1} },
+	{ MODKEY,                            -1,XKB_KEY_Up,                     focusdir,         {.ui = 2} },
+	{ MODKEY,                            -1,XKB_KEY_Down,                   focusdir,         {.ui = 3} },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Left,                   swapdir,          {.ui = 0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Right,                  swapdir,          {.ui = 1} },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Up,                     swapdir,          {.ui = 2} },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Down,                   swapdir,          {.ui = 3} },
+	{ MODKEY|WLR_MODIFIER_CTRL,          -1,XKB_KEY_Down,                   moveresizekb,     {.v = (int []){ 0, 40, 0, 0 }}},
+	{ MODKEY|WLR_MODIFIER_CTRL,          -1,XKB_KEY_Up,                     moveresizekb,     {.v = (int []){ 0, -40, 0, 0 }}},
+	{ MODKEY|WLR_MODIFIER_CTRL,          -1,XKB_KEY_Right,                  moveresizekb,     {.v = (int []){ 40, 0, 0, 0 }}},
+	{ MODKEY|WLR_MODIFIER_CTRL,          -1,XKB_KEY_Left,                   moveresizekb,     {.v = (int []){ -40, 0, 0, 0 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Down,                   moveresizekb,     {.v = (int []){ 0, 0, 0, 40 }}},//NOTWORK
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Up,                     moveresizekb,     {.v = (int []){ 0, 0, 0, -40 }}},//NOTWORK
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Right,                  moveresizekb,     {.v = (int []){ 0, 0, 40, 0 }}},//NOTWORK
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_Left,                   moveresizekb,     {.v = (int []){ 0, 0, -40, 0 }}},//NOTWORK
+	{ MODKEY,                            -1,XKB_KEY_j,                      incnmaster,       {.i = +1} },
+	{ MODKEY,                            -1,XKB_KEY_k,                      incnmaster,       {.i = -1} },
+	{ MODKEY,                            -1,XKB_KEY_h,                      setmfact,         {.f = -0.05} },
+	{ MODKEY,                            -1,XKB_KEY_l,                      setmfact,         {.f = +0.05} },
+//	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_j,                      focusstack,       {.i = +1} },
+//	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_k,                      focusstack,       {.i = -1} },
+	{ MODKEY,                            -1,XKB_KEY_r,                      setlayout,        {.v = &layouts[0]} },
+	{ MODKEY,                            -1,XKB_KEY_t,                      setlayout,        {.v = &layouts[1]} },
+//	{ MODKEY,                            -1,XKB_KEY_f,                      setlayout,        {.v = &layouts[2]} },
+//	{ MODKEY,                            -1,XKB_KEY_o,                      setlayout,        {.v = &layouts[3]} },
+//	{ MODKEY,                            -1,XKB_KEY_p,                      setlayout,        {.v = &layouts[4]} },
+	{ MODKEY,                            -1,XKB_KEY_Insert,                 togglefloating,   {0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT,         -1,XKB_KEY_F,                      togglefullscreen, {0} },
+	{ MODKEY,                            -1,XKB_KEY_Tab,                    view,             {0} },
+//	{ MODKEY|WLR_MODIFIER_CTRL,          -1,XKB_KEY_Tab,                    view,             {.ui = ~0} },
+	{ MODKEY,                            -1,XKB_KEY_z,                      tag,              {.ui = ~0} },
+//	{ MODKEY,                            -1,XKB_KEY_x,                      zoom,             {0} },
+//	{ MODKEY,                            -1, XKB_KEY_v,                     tagmon,           {.i = WLR_DIRECTION_LEFT} },
+//	{ MODKEY,                            -1, XKB_KEY_b,                     tagmon,           {.i = WLR_DIRECTION_RIGHT} },
+//	{ MODKEY,                            -1, XKB_KEY_n,                     focusmon,         {.i = WLR_DIRECTION_LEFT} },
+//	{ MODKEY,                            -1, XKB_KEY_m,                     focusmon,         {.i = WLR_DIRECTION_RIGHT} },
+	{ MODKEY,                            -1, XKB_KEY_g,                     togglegaps,       {0} },
+	{ MODKEY,                            -1, XKB_KEY_b,                     togglebar,        {0} },
+	
+	TAGKEYS(XKB_KEY_1, XKB_KEY_exclam,       0),
+	TAGKEYS(XKB_KEY_2, XKB_KEY_at,           1),
+	TAGKEYS(XKB_KEY_3, XKB_KEY_numbersign,   2),
+	TAGKEYS(XKB_KEY_4, XKB_KEY_dollar,       3),
+	TAGKEYS(XKB_KEY_5, XKB_KEY_percent,      4),
+	TAGKEYS(XKB_KEY_6, XKB_KEY_asciicircum,  5),
+	TAGKEYS(XKB_KEY_7, XKB_KEY_ampersand,    6),
+	TAGKEYS(XKB_KEY_8, XKB_KEY_asterisk,     7),
+	TAGKEYS(XKB_KEY_9, XKB_KEY_parenleft,    8),
+
+	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT, -1,XKB_KEY_C,            quit,             {0} },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,-1,XKB_KEY_Terminate_Server, quit, {0} },
